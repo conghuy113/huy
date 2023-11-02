@@ -1,10 +1,15 @@
 import { Router } from 'express'
-import { loginController, registerController } from '~/controllers/users.controllers'
-import { loginValidator, registerValidator } from '~/middlewares/users.middlewares'
+import { loginController, logoutController, registerController } from '~/controllers/users.controllers'
+import {
+  accessTokenValidator,
+  loginValidator,
+  refreshTokenValidator,
+  registerValidator
+} from '~/middlewares/users.middlewares'
 import { wrapAsync } from '~/utils/handlers'
-const usersRouter = Router()
+const usersRoute = Router()
 
-export default usersRouter
+export default usersRoute
 
 /*
 des: đăng nhập
@@ -12,7 +17,7 @@ path: /users/login
 method: POST
 body: {email, password}
 */
-usersRouter.get('/login', loginValidator, loginController)
+usersRoute.get('/login', loginValidator, loginController)
 
 /*
 Description: Registor new user
@@ -25,4 +30,13 @@ body:{
     date_of_birth:string theo chuẩn ISO 8601
 }
  */
-usersRouter.post('/register', registerValidator, wrapAsync(registerController))
+usersRoute.post('/register', registerValidator, wrapAsync(registerController))
+
+/*
+    des: đăng xuất
+    path:/users/logout
+    method:POST
+    header: {Authorization: 'Bearer <access_token>'}
+    body: {refresh_token: string}
+*/
+usersRoute.post('/logout', accessTokenValidator, refreshTokenValidator, wrapAsync(logoutController))
