@@ -10,7 +10,8 @@ import {
   VerifyEmailReqBody,
   LogoutReqBody,
   ForgotPasswordReqBody,
-  VerifyForgotPasswordReqBody
+  VerifyForgotPasswordReqBody,
+  ResetPasswordReqBody
 } from '~/models/requests/User.requests'
 import { ObjectId } from 'mongodb'
 import { USERS_MESSAGES } from '~/constants/messages'
@@ -140,4 +141,19 @@ export const verifyForgotPasswordTokenController = async (
   return res.json({
     message: USERS_MESSAGES.VERIFY_FORGOT_PASSWORD_TOKEN_SUCCESS
   })
+}
+
+export const resetPasswordController = async (
+  req: Request<ParamsDictionary, any, ResetPasswordReqBody>,
+  res: Response
+) => {
+  //middleware resetPasswordValidator đã chạy rồi, nên ta có thể lấy đc user_id từ decoded_forgot_password_token
+  const { user_id } = req.decoded_forgot_password_token as TokenPayload
+
+  const { password } = req.body
+
+  //vào database tìm user thông qua user_id này và cập nhật lại password mới
+  //vì vào database nên ta sẽ code ở user.services
+  const result = await usersService.resetPassword({ user_id, password }) //ta chưa code resetPassword
+  return res.json(result)
 }
