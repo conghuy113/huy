@@ -39,7 +39,7 @@ export default usersRoute
   method: POST
   body: {email, password}
 */
-usersRoute.get('/login', loginValidator, loginController)
+usersRoute.post('/login', loginValidator, loginController)
 
 /*
 Description: Registor new user
@@ -170,7 +170,7 @@ method: post
 headers: {Authorization: Bearer <access_token>}
 body: {followed_user_id: string}
 */
-usersRoute.get('/follow', accessTokenValidator, verifiedUserValidator, followValidator, wrapAsync(followController))
+usersRoute.post('/follow', accessTokenValidator, verifiedUserValidator, followValidator, wrapAsync(followController))
 //accessTokenValidator dùng dể kiểm tra xem ngta có đăng nhập hay chưa, và có đc user_id của người dùng từ req.decoded_authorization
 //verifiedUserValidator dùng để kiễm tra xem ngta đã verify email hay chưa, rồi thì mới cho follow người khác
 //trong req.body có followed_user_id  là mã của người mà ngta muốn follow
