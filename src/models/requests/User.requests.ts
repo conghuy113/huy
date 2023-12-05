@@ -1,5 +1,6 @@
 import { JwtPayload } from 'jsonwebtoken'
 import { TokenType, UserVerifyStatus } from '~/constants/enums'
+import { ParamsDictionary } from 'express-serve-static-core'
 
 export interface RegisterReqBody {
   name: string
@@ -54,10 +55,14 @@ export interface UpdateMeReqBody {
 }
 //vì đây là route patch nên ngta truyền thiếu 1 trong các prop trên cũng k sao
 
-export interface GetProfileReqParams {
+export interface GetProfileReqParams extends ParamsDictionary {
   username: string
 }
 
 export interface FollowReqBody {
   followed_user_id: string
+}
+
+export interface UnfollowReqParams extends ParamsDictionary {
+  user_id: string
 }

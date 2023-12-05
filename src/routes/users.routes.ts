@@ -10,6 +10,7 @@ import {
   registerController,
   resendEmailVerifyController,
   resetPasswordController,
+  unfollowController,
   updateMeController,
   verifyForgotPasswordTokenController
 } from '~/controllers/users.controllers'
@@ -23,6 +24,7 @@ import {
   refreshTokenValidator,
   registerValidator,
   resetPasswordValidator,
+  unfollowValidator,
   updateMeValidator,
   verifiedUserValidator,
   verifyForgotPasswordValidator
@@ -177,3 +179,23 @@ usersRoute.post('/follow', accessTokenValidator, verifiedUserValidator, followVa
 //followValidator: kiểm tra followed_user_id truyền lên có đúng định dạng objectId hay không
 //  account đó có tồn tại hay không
 //followController: tiến hành thao tác tạo document vào collection followers
+
+/*
+    des: unfollow someone
+    path: '/unfollow/:user_id'
+    method: delete
+    headers: {Authorization: Bearer <access_token>}
+*/
+//unfollowValidator: kiểm tra user_id truyền qua params có hợp lệ hay k?
+usersRoute.delete(
+  '/unfollow/:user_id',
+  accessTokenValidator,
+  verifiedUserValidator,
+  unfollowValidator,
+  wrapAsync(unfollowController)
+)
+
+/*
+user_id:656d460523f6ad291b239b47
+followed:656d43787be8fadd7c513b61
+ */
