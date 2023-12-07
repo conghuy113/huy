@@ -8,6 +8,7 @@ import {
   getProfileController,
   loginController,
   logoutController,
+  refreshTokenController,
   registerController,
   resendEmailVerifyController,
   resetPasswordController,
@@ -203,7 +204,7 @@ usersRoute.delete(
   method: PUT
   headers: {Authorization: Bearer <access_token>}
   Body: {old_password: string, password: string, confirm_password: string}
-g}
+}
   */
 usersRoute.put(
   '/change-password',
@@ -212,3 +213,13 @@ usersRoute.put(
   changePasswordValidator,
   wrapAsync(changePasswordController)
 )
+
+/*
+  des: refreshtoken
+  path: '/refresh-token'
+  method: POST
+  Body: {refresh_token: string}
+g}
+  */
+usersRoute.post('/refresh-token', refreshTokenValidator, wrapAsync(refreshTokenController))
+//khỏi kiểm tra accesstoken, tại nó hết hạn rồi mà
