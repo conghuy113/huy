@@ -24,6 +24,8 @@ import { USERS_MESSAGES } from '~/constants/messages'
 import { ErrorWithStatus } from '~/models/Errors'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { UserVerifyStatus } from '~/constants/enums'
+import { config } from 'dotenv'
+config() //để xài đc biến môi trường
 
 export const loginController = async (req: Request<ParamsDictionary, any, LoginReqBody>, res: Response) => {
   //lấy user_id từ user của req
@@ -244,4 +246,12 @@ export const refreshTokenController = async (
     //message.ts thêm REFRESH_TOKEN_SUCCESS: 'Refresh token success',
     result
   })
+}
+
+export const oAuthController = async (req: Request, res: Response) => {
+  const { code } = req.query // lấy code từ query params
+  //tạo đường dẫn truyền thông tin result để sau khi họ chọn tại khoản, ta check (tạo | login) xong thì điều hướng về lại client kèm thông tin at và rf
+  const { access_token, refresh_token, new_user, verify } = await usersService.oAuth(code as string)
+  const urlRedirect = `${process.env.CLIENT_REDIRECT_CALLBACK}?access_token=${access_token}&refresh_token=${refresh_token}&new_user=${new_user}&verify=${verify}`
+  return res.redirect(urlRedirect)
 }
