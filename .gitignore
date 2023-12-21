@@ -142,3 +142,5 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+uploads
+client_secret_695444237750-ap11nf0rh5260t6tmsabi4ikcranecvn.apps.googleusercontent.com.json
